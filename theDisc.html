@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search and Chat Page</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="header">
+        <img src="Logo1.svg" alt="Logo1">
+        <div class="search-bar">
+            <input type="text" id="searchQuery" placeholder="Search">
+            <button onclick="clearChatHistory(); performSearch();">
+                <img src="search-icon.svg" alt="Search">
+            </button>
+        </div>
+    </div>
+    <div class="content">
+        <div class="search-results" id="searchResults">
+            <!-- Search results will be inserted here -->
+        </div>
+        <div class="pagination" id="pagination">
+            <!-- Pagination buttons will be inserted here -->
+        </div>
+        <div class="chat">
+            <div class="chat-messages" id="chatMessages">
+                <!-- Chat messages will go here -->
+            </div>
+            <div class="chat-input">
+                <input type="text" id="userInput" placeholder="Type a message">
+                <button onclick="sendMessage()">
+                    <img src="send-icon.svg" alt="Send">
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
