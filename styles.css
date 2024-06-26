@@ -10,6 +10,7 @@ body {
 .header {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 10px;
     background-color: #fff;
     border-bottom: 1px solid #ddd;
@@ -52,6 +53,18 @@ body {
 }
 .search-bar button img {
     height: 20px;
+}
+.email-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    padding: 0 10px; /* Добавлен отступ справа */
+    display: flex;
+    align-items: center;
+}
+.email-button img {
+    height: 24px;
 }
 .content {
     display: flex;
@@ -176,4 +189,3 @@ body {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
-
