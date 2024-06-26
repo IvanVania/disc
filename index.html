@@ -9,13 +9,19 @@
 </head>
 <body>
     <div class="header">
-        <img src="Logo1.svg" alt="Logo1">
-        <div class="search-bar">
-            <input type="text" id="searchQuery" placeholder="Search">
-            <button onclick="clearChatHistory(); performSearch();">
-                <img src="search-icon.svg" alt="Search">
-            </button>
+        <div style="display: flex; align-items: center;">
+            <img src="Logo1.svg" alt="Logo1">
+            <div class="search-bar">
+                <input type="text" id="searchQuery" placeholder="Search">
+                <button onclick="clearChatHistory(); performSearch();">
+                    <img src="search-icon.svg" alt="Search">
+                </button>
+            </div>
         </div>
+        <!-- Кнопка для отправки email -->
+        <button class="email-button" onclick="window.location.href='mailto:skripnik.vania@gmail.com'">
+            <img src="email-icon.svg" alt="Email">
+        </button>
     </div>
     <div class="content">
         <div class="search-results" id="searchResults">
@@ -38,3 +44,4 @@
     </div>
 </body>
 </html>
+
