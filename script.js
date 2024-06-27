@@ -9,33 +9,30 @@ function clearChatHistory() {
 
 async function performSearch(page = 1) {
     currentPage = page;
-    const query = document.getElementById('searchQuery').value; //  
-    const start = (page - 1) * resultsPerPage + 1; //  
+    const query = document.getElementById('searchQuery').value;
+    const start = (page - 1) * resultsPerPage + 1;
 
-    //  
     const bodyContent = JSON.stringify({ query, start });
 
-    // 
     const response = await fetch('https://52urwwn2ba.execute-api.us-east-2.amazonaws.com/dev1/search', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ body: bodyContent }) //  
+        body: JSON.stringify({ body: bodyContent })
     });
 
     const resultText = await response.json();
     const results = JSON.parse(resultText.body);
 
-    displayResults(results); // 
-    displayPagination(results.queries.request[0].totalResults); //  
+    displayResults(results);
+    displayPagination(results.queries.request[0].totalResults);
 }
 
 function displayResults(results) {
     const resultsDiv = document.getElementById('searchResults');
     resultsDiv.innerHTML = '';
 
-    //  
     if (results.items && Array.isArray(results.items)) {
         results.items.forEach(item => {
             const resultElement = document.createElement('div');
@@ -46,7 +43,7 @@ function displayResults(results) {
                     <div class="snippet">${item.snippet}</div>
                 </div>
                 <div class="button-container">
-                    <button onclick="fetchAndProcessText('${item.link}', '${item.title}')">
+                    <button onclick="fetchAndProcessText('${item.link}', '${document.getElementById('searchQuery').value}')">
                         <img src="button-icon.svg" alt="Button">
                     </button>
                 </div>
@@ -84,7 +81,7 @@ function displayPagination(totalResults) {
 }
 
 async function fetchAndProcessText(url, query) {
-    clearChatHistory(); // 
+    clearChatHistory();
     const chatMessages = document.getElementById('chatMessages');
     chatMessages.innerHTML = '';
 
@@ -97,20 +94,39 @@ async function fetchAndProcessText(url, query) {
         url: url
     };
 
+    const wrappedBodyContent = {
+        body: JSON.stringify(bodyContent)
+    };
+
+    console.log('Request body:', wrappedBodyContent);
+
     const response = await fetch('https://iiyzih11c2.execute-api.us-east-2.amazonaws.com/dev2/dev2', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ body: JSON.stringify(bodyContent) })
+        body: JSON.stringify(wrappedBodyContent)
     });
 
+    if (!response.ok) {
+        console.error('Error fetching and processing text:', response.statusText);
+        chatMessages.removeChild(loadingIndicator);
+        return;
+    }
+
     const resultText = await response.json();
-    const answer = JSON.parse(resultText.body).answer;
+    console.log('Response:', resultText);
 
-    chatMessages.removeChild(loadingIndicator);
+    if (resultText.body) {
+        const resultBody = JSON.parse(resultText.body);
+        const answer = resultBody ? resultBody.answer : 'Сайт не удалось прочитать';
 
-    await displayTextWordByWord(answer);
+        chatMessages.removeChild(loadingIndicator);
+        await displayTextWordByWord(answer);
+    } else {
+        console.error('Received empty or invalid text for display');
+        chatMessages.removeChild(loadingIndicator);
+    }
 }
 
 async function displayTextWordByWord(text) {
@@ -122,7 +138,7 @@ async function displayTextWordByWord(text) {
     const words = text.split(' ');
     const chatMessages = document.getElementById('chatMessages');
     const messageElement = document.createElement('div');
-    messageElement.innerHTML = 'Disc: '; //  
+    messageElement.innerHTML = 'Disc: ';
     chatMessages.appendChild(messageElement);
 
     for (let word of words) {
@@ -131,8 +147,8 @@ async function displayTextWordByWord(text) {
         } else if (word.includes('\n')) {
             word = word.replace(/\n/g, '<br>');
         }
-        messageElement.innerHTML += word + ' '; //  
-        await new Promise(resolve => setTimeout(resolve, 200)); //  
+        messageElement.innerHTML += word + ' ';
+        await new Promise(resolve => setTimeout(resolve, 200));
     }
 
     chatHistory.push(`AI: ${text}`);
@@ -161,7 +177,7 @@ async function sendMessage() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ body: JSON.stringify(bodyContent) }) //  
+            body: JSON.stringify({ body: JSON.stringify(bodyContent) })
         });
 
         chatMessages.removeChild(loadingIndicator);
@@ -173,16 +189,15 @@ async function sendMessage() {
         }
 
         const resultText = await response.json();
-        console.log('Result text:', resultText); //  
+        console.log('Result text:', resultText);
         const parsedBody = JSON.parse(resultText.body);
-        console.log('Parsed body:', parsedBody); //  
+        console.log('Parsed body:', parsedBody);
         const answer = parsedBody.answer;
 
         console.log('Response from API Gateway:', answer);
         await displayTextWordByWord(answer);
     }
 }
-
 
 function displayChatResponse() {
     const chatMessages = document.getElementById('chatMessages');
@@ -193,6 +208,3 @@ function displayChatResponse() {
         chatMessages.appendChild(messageElement);
     });
 }
-
-
-
