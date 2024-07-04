@@ -100,32 +100,52 @@ async function fetchAndProcessText(url, query) {
 
     console.log('Request body:', wrappedBodyContent);
 
-    const response = await fetch('https://iiyzih11c2.execute-api.us-east-2.amazonaws.com/dev2/dev2', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(wrappedBodyContent)
-    });
+    try {
+        const response = await fetch('https://iiyzih11c2.execute-api.us-east-2.amazonaws.com/dev2/dev2', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(wrappedBodyContent)
+        });
 
-    if (!response.ok) {
-        console.error('Error fetching and processing text:', response.statusText);
+        if (!response.ok) {
+            if (response.status === 504) {
+                console.error('Gateway Timeout error:', response.statusText);
+                chatMessages.removeChild(loadingIndicator);
+                displayChatResponse('Sorry, the site could not be read');
+            } else {
+                console.error('Error fetching and processing text:', response.statusText);
+                chatMessages.removeChild(loadingIndicator);
+                displayChatResponse('Error fetching and processing text: ' + response.statusText);
+            }
+            return;
+        }
+
+        const resultText = await response.json();
+        console.log('Response:', resultText);
+
+        if (resultText.body) {
+            try {
+                const resultBody = JSON.parse(resultText.body);
+                const answer = resultBody ? resultBody.answer : 'Сайт не удалось прочитать';
+
+                chatMessages.removeChild(loadingIndicator);
+                await displayTextWordByWord(answer);
+            } catch (error) {
+                console.error('Error parsing result body:', error);
+                chatMessages.removeChild(loadingIndicator);
+                displayChatResponse('Ошибка при обработке ответа');
+            }
+        } else {
+            console.error('Received empty or invalid text for display');
+            chatMessages.removeChild(loadingIndicator);
+            displayChatResponse('Received empty or invalid text for display');
+        }
+    } catch (error) {
+        console.error('Fetch error:', error);
         chatMessages.removeChild(loadingIndicator);
-        return;
-    }
-
-    const resultText = await response.json();
-    console.log('Response:', resultText);
-
-    if (resultText.body) {
-        const resultBody = JSON.parse(resultText.body);
-        const answer = resultBody ? resultBody.answer : 'Сайт не удалось прочитать';
-
-        chatMessages.removeChild(loadingIndicator);
-        await displayTextWordByWord(answer);
-    } else {
-        console.error('Received empty or invalid text for display');
-        chatMessages.removeChild(loadingIndicator);
+        displayChatResponse('Fetch error: ' + error.message);
     }
 }
 
@@ -135,24 +155,18 @@ async function displayTextWordByWord(text) {
         return;
     }
 
-    const words = text.split(' ');
     const chatMessages = document.getElementById('chatMessages');
     const messageElement = document.createElement('div');
-    messageElement.innerHTML = 'Disc: ';
+    
+    // Replace new lines with <br> tags for proper formatting
+    const formattedText = text.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
+    
+    messageElement.innerHTML = `Disc: ${formattedText}`;
     chatMessages.appendChild(messageElement);
-
-    for (let word of words) {
-        if (word.includes('\n\n')) {
-            word = word.replace(/\n\n/g, '<br><br>');
-        } else if (word.includes('\n')) {
-            word = word.replace(/\n/g, '<br>');
-        }
-        messageElement.innerHTML += word + ' ';
-        await new Promise(resolve => setTimeout(resolve, 200));
-    }
 
     chatHistory.push(`AI: ${text}`);
 }
+
 
 async function sendMessage() {
     const userInput = document.getElementById('userInput');
@@ -185,6 +199,7 @@ async function sendMessage() {
         if (!response.ok) {
             const error = await response.text();
             console.error('Error from API Gateway:', error);
+            displayChatResponse('Error from API Gateway: ' + error);
             return;
         }
 
@@ -199,12 +214,17 @@ async function sendMessage() {
     }
 }
 
-function displayChatResponse() {
+function displayChatResponse(text = null) {
     const chatMessages = document.getElementById('chatMessages');
     chatMessages.innerHTML = '';
+
+    if (text) {
+        chatHistory.push(`AI: ${text}`);
+    }
+
     chatHistory.forEach(message => {
         const messageElement = document.createElement('div');
-        messageElement.innerText = message;
+        messageElement.innerHTML = message.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
         chatMessages.appendChild(messageElement);
     });
 }
