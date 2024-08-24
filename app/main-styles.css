@@ -1,0 +1,307 @@
+body {
+    font-family: 'Roboto', sans-serif; /* Основной шрифт для всего тела */
+    display: flex; /* Гибкий контейнер */
+    flex-direction: column; /* Расположение элементов по вертикали */
+    height: 100vh; /* Высота на весь экран */
+    margin: 0; /* Убираем отступы по умолчанию */
+    overflow: hidden; /* Скрываем переполнение */
+    background-color: #f0f2f5; /* Цвет фона */
+}
+
+.header {
+    width: 100%; /* Ширина на весь экран */
+    background-color: #3b5998; /* Цвет фона шапки */
+    color: white; /* Цвет текста */
+    padding: 15px 20px; /* Внутренние отступы */
+    box-sizing: border-box; /* Включаем padding в ширину элемента */
+    font-size: 26px; /* Размер шрифта */
+    font-weight: 700; /* Толщина шрифта */
+    text-align: center; /* Выравнивание текста по центру */
+    letter-spacing: 1px; /* Межбуквенное расстояние */
+    position: relative; /* Относительное позиционирование */
+}
+
+.profile-section {
+    position: absolute; /* Абсолютное позиционирование внутри шапки */
+    right: 20px; /* Отступ справа */
+    top: 50%; /* Выравнивание по вертикали */
+    transform: translateY(-50%); /* Центрирование по вертикали */
+    display: flex; /* Гибкий контейнер для аватара и кнопки */
+    align-items: center; /* Выравнивание элементов по центру */
+}
+
+.profile-pic {
+    width: 40px; /* Ширина изображения профиля */
+    height: 40px; /* Высота изображения профиля */
+    border-radius: 50%; /* Скругление краев для круга */
+    margin-right: 10px; /* Отступ справа от картинки */
+}
+
+.logout-btn {
+    background-color: #f44336; /* Цвет фона кнопки */
+    color: white; /* Цвет текста кнопки */
+    border: none; /* Убираем границы */
+    padding: 8px 12px; /* Внутренние отступы */
+    border-radius: 5px; /* Скругленные углы кнопки */
+    font-size: 14px; /* Размер шрифта */
+    cursor: pointer; /* Изменение курсора при наведении */
+    transition: background-color 0.3s ease; /* Плавный переход цвета фона */
+}
+
+.logout-btn:hover {
+    background-color: #d32f2f; /* Цвет кнопки при наведении */
+}
+
+.content {
+    display: flex; /* Гибкий контейнер */
+    height: calc(100% - 60px); /* Высота контента с учетом высоты шапки */
+    flex-grow: 1; /* Контент будет занимать оставшееся пространство */
+    overflow: hidden; /* Скрытие переполнения */
+}
+
+.sidebar {
+    width: 250px; /* Фиксированная ширина боковой панели */
+    background-color: #fff; /* Цвет фона панели */
+    border-right: 1px solid #ddd; /* Граница справа */
+    overflow-y: auto; /* Прокрутка для длинного контента */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Тень вокруг панели */
+    flex-shrink: 0; /* Предотвращение сжатия панели */
+    box-sizing: border-box; /* Включаем padding в ширину элемента */
+    padding: 10px; /* Внутренние отступы панели */
+}
+
+.sidebar h2 {
+    margin-top: 0; /* Убираем отступ сверху */
+    font-weight: 500; /* Толщина шрифта */
+    color: #333; /* Цвет текста */
+    font-size: 22px; /* Размер шрифта */
+    margin-bottom: 20px; /* Отступ снизу */
+    text-align: center; /* Выравнивание по центру */
+}
+
+.new-book-btn {
+    background: linear-gradient(to right, #2980b9, #6dd5fa, #2980b9); /* Градиентный фон кнопки */
+    background-size: 200% 200%; /* Размер анимации фона */
+    animation: gradient-animation 5s ease infinite; /* Анимация градиента */
+    border: none; /* Убираем границы */
+    color: white; /* Цвет текста */
+    text-align: center; /* Выравнивание текста по центру */
+    text-decoration: none; /* Убираем подчеркивание текста */
+    display: inline-block; /* Инлайн-блок для кнопки */
+    font-size: 16px; /* Размер шрифта */
+    cursor: pointer; /* Изменение курсора при наведении */
+    border-radius: 5px; /* Скругленные углы */
+    width: 100%; /* Кнопка занимает всю ширину контейнера */
+    padding: 10px; /* Внутренние отступы */
+    margin: 10px 0; /* Внешние отступы сверху и снизу */
+    box-sizing: border-box; /* Включение padding и border в общую ширину */
+    transition: transform 0.3s ease; /* Плавная трансформация при наведении */
+}
+
+.chat-send-btn {
+    background: linear-gradient(to right, #2980b9, #6dd5fa, #2980b9); /* Градиентный фон */
+    background-size: 200% 200%; /* Размер фона для анимации */
+    animation: gradient-animation 5s ease infinite; /* Анимация градиента */
+    border: none; /* Убираем рамку */
+    color: white; /* Цвет текста */
+    text-align: center; /* Выравнивание текста по центру */
+    text-decoration: none; /* Убираем подчеркивание */
+    display: inline-block; /* Блоковый элемент с возможностью располагаться в ряд */
+    font-size: 16px; /* Размер шрифта */
+    cursor: pointer; /* Изменение курсора при наведении */
+    border-radius: 5px; /* Скругленные углы */
+    padding: 10px; /* Внутренний отступ */
+    margin: 10px; /* Внешние отступы */
+    box-sizing: border-box; /* Включение отступов и рамки в общую ширину */
+    white-space: nowrap; /* Запрещаем перенос текста на новую строку */
+}
+
+
+.chat-send-btn:hover {
+    transform: scale(1.05); /* Увеличение кнопки при наведении */
+}
+
+
+
+.new-book-btn:hover {
+    transform: scale(1.05); /* Увеличение кнопки при наведении */
+}
+
+@keyframes gradient-animation {
+    0% {
+        background-position: 0% 50%; /* Начальная позиция градиента */
+    }
+    50% {
+        background-position: 100% 50%; /* Средняя позиция градиента */
+    }
+    100% {
+        background-position: 0% 50%; /* Конечная позиция градиента */
+    }
+}
+
+.chat-list {
+    list-style: none; /* Убираем маркеры списка */
+    padding: 0; /* Убираем внутренние отступы */
+    margin: 0; /* Убираем внешние отступы */
+    width: 100%; /* Ширина списка на 100% */
+}
+
+.chat-list li {
+    display: flex; /* Гибкий контейнер для элементов списка */
+    align-items: center; /* Выравнивание по вертикали */
+    justify-content: space-between; /* Равномерное распределение элементов */
+    padding: 15px 10px; /* Внутренние отступы */
+    margin-bottom: 10px; /* Отступ снизу */
+    border-radius: 0px; /* Скругленные углы */
+    border: 1px solid #ddd; /* Граница элемента */
+    cursor: pointer; /* Изменение курсора при наведении */
+    font-size: 16px; /* Размер шрифта */
+    color: #555; /* Цвет текста */
+    background-color: #f9f9f9; /* Фон элемента списка */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Тень вокруг элемента */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Плавный переход при наведении */
+    box-sizing: border-box; /* Включение padding и border в общую ширину */
+    white-space: nowrap; /* Текст не переносится на новую строку */
+    overflow: hidden; /* Обрезка текста, выходящего за пределы */
+    text-overflow: ellipsis; /* Добавление троеточия для длинного текста */
+}
+
+.chat-list li:hover {
+    background-color: #e3e3e3; /* Изменение фона при наведении */
+    transform: translateX(5px); /* Эффект сдвига при наведении */
+}
+
+.chat-list li.active {
+    background-color: #d1e0f1; /* Цвет фона активного элемента */
+    border-color: #b0c7e4; /* Цвет границы активного элемента */
+}
+
+.main-content {
+    flex-grow: 1; /* Контент будет занимать оставшееся пространство */
+    padding: 30px; /* Внутренние отступы */
+    box-sizing: border-box; /* Включение padding и border в общую ширину */
+    overflow-y: auto; /* Прокрутка для длинного контента */
+    background-color: #fff; /* Цвет фона */
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1); /* Внутренняя тень */
+    display: flex; /* Гибкий контейнер */
+    flex-direction: column; /* Вертикальное расположение элементов */
+}
+
+.book-title {
+    font-size: 24px; /* Размер шрифта */
+    color: #333; /* Цвет текста */
+    font-weight: 500; /* Толщина шрифта */
+    margin-bottom: 20px; /* Отступ снизу */
+}
+
+.book-content {
+    flex-grow: 1; /* Контент будет занимать оставшееся пространство */
+    font-size: 18px; /* Размер шрифта */
+    color: #666; /* Цвет текста */
+    line-height: 1.6; /* Высота строки */
+    margin-bottom: 20px; /* Отступ снизу */
+    overflow-y: auto; /* Прокрутка для длинного текста */
+    padding: 10px; /* Внутренние отступы */
+    border: 1px solid #ddd; /* Граница контента */
+    border-radius: 5px; /* Скругленные углы */
+    background-color: #f9f9f9; /* Цвет фона */
+    white-space: pre-wrap; /* Сохраняем переносы строк */
+}
+
+.chat-input-container {
+    display: flex; /* Гибкий контейнер */
+    align-items: center; /* Выравнивание элементов по вертикали */
+}
+
+.chat-input {
+    flex-grow: 1; /* Поле ввода занимает оставшееся пространство */
+    padding: 10px; /* Внутренние отступы */
+    font-size: 16px; /* Размер шрифта */
+    border-radius: 5px; /* Скругленные углы */
+    border: 1px solid #ddd; /* Граница поля ввода */
+    margin-right: 10px; /* Отступ справа */
+}
+
+.word-number-select {
+    margin-right: 10px; /* Отступ справа */
+    padding: 10px; /* Внутренние отступы */
+    font-size: 16px; /* Размер шрифта */
+    border-radius: 5px; /* Скругленные углы */
+    border: 1px solid #ddd; /* Граница селектора */
+}
+
+.start-generation-bar {
+    background-color: #f1f1f1; /* Цвет фона */
+    padding: 10px; /* Внутренние отступы */
+    margin-bottom: 10px; /* Отступ снизу */
+    border-radius: 5px; /* Скругленные углы */
+    display: flex; /* Гибкий контейнер */
+    justify-content: space-between; /* Распределение элементов */
+    align-items: center; /* Выравнивание элементов по вертикали */
+}
+
+.start-generation-bar button {
+    background: linear-gradient(to right, #2980b9, #6dd5fa, #2980b9); /* Градиентный фон кнопки */
+    background-size: 200% 200%; /* Размер анимации фона */
+    animation: gradient-animation 5s ease infinite; /* Анимация градиента */
+    border: none; /* Убираем границы */
+    color: white; /* Цвет текста */
+    padding: 10px; /* Внутренние отступы */
+    border-radius: 5px; /* Скругленные углы */
+    font-size: 16px; /* Размер шрифта */
+    cursor: pointer; /* Изменение курсора при наведении */
+    width: auto; /* Кнопка будет принимать размер по содержимому */
+    transition: transform 0.3s ease; /* Плавная трансформация при наведении */
+}
+
+.start-generation-bar button:hover {
+    transform: scale(1.05); /* Эффект увеличения кнопки при наведении */
+}
+
+.credits-text {
+    margin-right: 15px;
+    font-size: 16px;
+    color: white;
+    font-weight: 600;
+}
+
+
+.loading-spinner {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+.buy-credits-btn {
+    background: linear-gradient(to right, #2980b9, #6dd5fa, #2980b9); /* Градиентный фон */
+    background-size: 200% 200%; /* Размер фона для анимации */
+    animation: gradient-animation 5s ease infinite; /* Анимация градиента */
+    border: none; /* Убираем рамку */
+    color: white; /* Цвет текста */
+    text-align: center; /* Выравнивание текста по центру */
+    text-decoration: none; /* Убираем подчеркивание */
+    display: inline-block; /* Блоковый элемент с возможностью располагаться в ряд */
+    font-size: 16px; /* Размер шрифта */
+    cursor: pointer; /* Изменение курсора при наведении */
+    border-radius: 5px; /* Скругленные углы */
+    padding: 10px 20px; /* Внутренний отступ */
+    margin: 0 10px; /* Внешние отступы */
+    box-sizing: border-box; /* Включение отступов и рамки в общую ширину */
+    white-space: nowrap; /* Запрещаем перенос текста на новую строку */
+    transition: transform 0.3s ease; /* Плавная трансформация при наведении */
+}
+
+.buy-credits-btn:hover {
+    transform: scale(1.05); /* Увеличение кнопки при наведении */
+}
+

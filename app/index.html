@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book AI</title>
+    <link rel="stylesheet" href="main-styles.css">
+    <link rel="icon" href="logo.svg" type="image/x-icon"> <!-- Добавляем иконку -->
+</head>
+<body>
+    <div class="header">
+        Book AI
+        <div class="profile-section">
+            <span id="credits" class="credits-text">Credits: 0</span>
+            <button id="buy-credits-btn" class="buy-credits-btn" onclick="openPurchasePage()">Buy Credits</button> <!-- Кнопка Купить -->
+            <img id="profile-pic" class="profile-pic" src="" alt="Profile Picture">
+            <button class="logout-btn" onclick="logout()">Log out</button>
+        </div>
+    </div>
+    <div class="content">
+        <div class="sidebar">
+            <h2>Your books</h2>
+            <button class="new-book-btn" onclick="createNewBookWindow()">Start a new book</button>
+            <ul id="chat-list" class="chat-list"></ul>
+        </div>
+        <div id="book-content" class="main-content">
+            <h2>Select a chat to start communication</h2>
+        </div>
+    </div>
+    <script src="main-script.js"></script>
+    <script>
+function openPurchasePage() {
+    // Перенаправление на другую страницу для покупки кредитов
+    window.location.href = 'https://discbook.s3.us-east-2.amazonaws.com/buy-document.html'; 
+}
+
+    </script>
+</body>
+</html>

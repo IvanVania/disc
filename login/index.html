@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DiscBook AI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        .login-container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .login-container h1 {
+            margin-bottom: 20px;
+        }
+        .login-btn {
+            background-color: #4285F4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .login-btn:hover {
+            background-color: #357ae8;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Добро пожаловать в DiscBook AI</h1>
+        <button class="login-btn" onclick="startGoogleAuth()">Войти через Google</button>
+    </div>
+
+    <script>
+        // Функция для инициализации аутентификации через Google
+        function startGoogleAuth() {
+            const clientId = '473956107015-uaivpkmbdivg4unooq2mmqgat34npcbf.apps.googleusercontent.com'; // Ваш Google Client ID
+            const redirectUri = 'https://discbook.s3.us-east-2.amazonaws.com/main.html';  // Замените на ваш Redirect URI (например, https://example.com/main.html)
+            const scope = 'email profile';  // Укажите необходимые области доступа
+            const authUrl = `https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scope}`;
+
+            window.location.href = authUrl; // Перенаправляем пользователя на Google для аутентификации
+        }
+
+        document.querySelector('.login-btn').addEventListener('click', startGoogleAuth);
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>One-Click Book Generation</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap');
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .gradient-button {
+      background: linear-gradient(to right, #6366F1, #EC4899);
+      background-size: 200% 200%;
+      animation: gradient-animation 5s ease infinite;
+    }
+
+    @keyframes gradient-animation {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      background-color: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+    }
+  </style>
+</head>
+<body class="bg-gray-100 pt-16">
+  <header class="shadow-md py-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <a href="#" class="flex items-center">
+        <img src="logo.svg" alt="Book AI" class="h-8 mr-2" />
+        <span class="text-2xl font-extrabold text-gray-800 opacity-90">Book AI</span>
+      </a>
+      <a href="#" class="gradient-button text-white font-bold py-2 px-4 rounded-full">
+        Try Demo
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 py-20 text-white">
+      <div class="container mx-auto text-center">
+        <h1 class="text-4xl font-extrabold mb-4">Become an Author in One Click</h1>
+        <p class="text-xl font-medium mb-8">Introducing the Ultimate One-Click Book Generation Service</p>
+        <button class="gradient-button text-white font-bold py-3 px-6 rounded-full">
+          Get Started
+        </button>
+      </div>
+    </section>
+
+    <section class="container mx-auto py-16">
+      <h2 class="text-3xl font-extrabold mb-8">Generate a Full Book</h2>
+      <p class="text-gray-700 mb-4">
+        You can generate a full book ranging from 10,000 to 200,000 words. This is an approximate word count as the AI may generate slightly more or fewer words, with a margin of about 20,000 words for larger projects. 
+      </p>
+      <p class="text-gray-700 mb-4">
+        Depending on the number of words chosen, this will affect the generation speed. Typically, larger word counts generate in around 25 minutes on average, but this time may vary depending on server load.
+      </p>
+    </section>
+
+    <section class="bg-gray-800 text-white py-16">
+      <div class="container mx-auto">
+        <h2 class="text-3xl font-extrabold mb-8">Pricing</h2>
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
+          <div class="bg-gray-700 rounded-lg p-6">
+            <h3 class="text-2xl font-bold mb-4">Test Plan</h3>
+            <p class="text-4xl font-bold mb-2">$45</p>
+            <p class="text-gray-400 mb-4">1 Credit</p>
+            <button class="gradient-button text-white font-bold py-2 px-4 rounded-full">
+              Get Started
+            </button>
+          </div>
+          <div class="bg-gray-700 rounded-lg p-6">
+            <h3 class="text-2xl font-bold mb-4">Basic Plan</h3>
+            <p class="text-4xl font-bold mb-2">$375</p>
+            <p class="text-gray-400 mb-4">10 Credits</p>
+            <button class="gradient-button text-white font-bold py-2 px-4 rounded-full">
+              Get Started
+            </button>
+          </div>
+          <div class="bg-gray-700 rounded-lg p-6">
+            <h3 class="text-2xl font-bold mb-4">Pro Plan</h3>
+            <p class="text-4xl font-bold mb-2">$875</p>
+            <p class="text-gray-400 mb-4">25 Credits</p>
+            <button class="gradient-button text-white font-bold py-2 px-4 rounded-full">
+              Get Started
+            </button>
+          </div>
+          <div class="bg-gray-700 rounded-lg p-6">
+            <h3 class="text-2xl font-bold mb-4">Premium Plan</h3>
+            <p class="text-4xl font-bold mb-2">$1600</p>
+            <p class="text-gray-400 mb-4">50 Credits</p>
+            <button class="gradient-button text-white font-bold py-2 px-4 rounded-full">
+              Get Started
+            </button>
+          </div>
+          <div class="bg-gray-700 rounded-lg p-6">
+            <h3 class="text-2xl font-bold mb-4">Enterprise Plan</h3>
+            <p class="text-4xl font-bold mb-2">$3000</p>
+            <p class="text-gray-400 mb-4">100 Credits</p>
+            <button class="gradient-button text-white font-bold py-2 px-4 rounded-full">
+              Get Started
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container mx-auto py-16">
+      <h2 class="text-3xl font-extrabold mb-8">Important Note</h2>
+      <p class="text-gray-700 mb-4">
+        Please note that our AI-powered book generation service may occasionally produce inaccuracies or errors. While we strive for the highest quality, you should review the generated content carefully before publishing or using it.
+      </p>
+    </section>
+  </main>
+
+  <footer class="bg-gray-800 text-white py-6">
+    <div class="container mx-auto text-center">
+      <p>&copy; 2023 Book AI. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>
