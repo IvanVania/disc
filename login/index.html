@@ -14,12 +14,14 @@
             background-color: #f0f0f0;
             margin: 0;
         }
-        .login-container {
+        .login-container, .loading-container {
             text-align: center;
             background-color: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .login-container {
             display: none; /* Скроем контейнер с кнопкой до проверки */
         }
         .login-container h1 {
@@ -37,9 +39,30 @@
         .login-btn:hover {
             background-color: #357ae8;
         }
+        .loading-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .spinner {
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #4285F4;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
+    <div class="loading-container" id="loading-container">
+        <div class="spinner"></div>
+    </div>
+
     <div class="login-container" id="login-container">
         <h1>Добро пожаловать в DiscBook AI</h1>
         <button class="login-btn" onclick="startGoogleAuth()">Войти через Google</button>
@@ -52,15 +75,8 @@
             const accessToken = localStorage.getItem('jwtToken');
             const requestHeaders = {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + accessToken // предполагается, что токен уже хранится в localStorage
+                'Authorization': 'Bearer ' + accessToken
             };
-
-            console.log('Запуск проверки аутентификации');
-            console.log('Токен доступа:', accessToken);
-            console.log('Отправляемый запрос:', {
-                method: 'GET',
-                headers: requestHeaders
-            });
 
             try {
                 const response = await fetch(apiEndpoint, {
@@ -68,42 +84,35 @@
                     headers: requestHeaders
                 });
 
-                console.log('Ответ от API:', response);
-
                 if (response.ok) {
                     const data = await response.json();
-                    console.log('Данные из ответа:', data);
-
                     if (data.isAuthenticated) {
-                        console.log('Пользователь аутентифицирован, перенаправление...');
                         window.location.href = 'https://thedisc.xyz/app';
                     } else {
-                        console.log('Пользователь не аутентифицирован, показываем кнопку входа');
-                        document.getElementById('login-container').style.display = 'block'; // Показать контейнер с кнопкой входа
+                        document.getElementById('loading-container').style.display = 'none'; // 
+                        document.getElementById('login-container').style.display = 'block'; //  
                     }
                 } else {
-                    console.error('Ошибка HTTP:', response.status, response.statusText);
-                    document.getElementById('login-container').style.display = 'block'; // Показать контейнер с кнопкой входа при ошибке
+                    document.getElementById('loading-container').style.display = 'none'; //  
+                    document.getElementById('login-container').style.display = 'block'; //  
                 }
             } catch (error) {
                 console.error('Ошибка при проверке статуса аутентификации:', error);
-                document.getElementById('login-container').style.display = 'block'; // Показать контейнер с кнопкой входа при ошибке
+                document.getElementById('loading-container').style.display = 'none'; //  
+                document.getElementById('login-container').style.display = 'block'; //  
             }
         }
 
-        // Функция для инициализации аутентификации через Google
+        //  
         function startGoogleAuth() {
-            console.log('Запуск аутентификации через Google');
-            const clientId = '473956107015-uaivpkmbdivg4unooq2mmqgat34npcbf.apps.googleusercontent.com'; // Ваш Google Client ID
-            const redirectUri = 'https://thedisc.xyz/app';  // Замените на ваш Redirect URI
-            const scope = 'email profile';  // Укажите необходимые области доступа
+            const clientId = '473956107015-uaivpkmbdivg4unooq2mmqgat34npcbf.apps.googleusercontent.com';
+            const redirectUri = 'https://thedisc.xyz/app';
+            const scope = 'email profile';
             const authUrl = `https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scope}`;
-
-            console.log('Перенаправление на:', authUrl);
-            window.location.href = authUrl; // Перенаправляем пользователя на Google для аутентификации
+            window.location.href = authUrl;
         }
 
-        // Запускаем проверку аутентификации при загрузке страницы
+        //  
         window.onload = checkAuthStatus;
     </script>
 </body>
