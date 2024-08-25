@@ -39,13 +39,13 @@ window.onload = function() {
                 localStorage.setItem('jwtToken', data.accessToken);
             }
 
-            // Обновление изображения профиля
+            //  
             document.getElementById('profile-pic').src = data.user.profilePicture;
 
-            // Обновление количества кредитов
+            //  
             document.getElementById('credits').textContent = `Credits: ${data.user.credits || 0}`;
 
-            // Обновление списка книг
+            //  
             const chatList = document.getElementById('chat-list');
             chatList.innerHTML = '';
 
@@ -127,7 +127,7 @@ function sendCreateBookPlan() {
     const messagesContainer = document.getElementById('book-messages');
     const spinner = document.createElement('div');
     spinner.className = 'loading-spinner';
-    messagesContainer.innerHTML = '';  // Очищаем контейнер перед добавлением спиннера
+    messagesContainer.innerHTML = '';  // 
     messagesContainer.appendChild(spinner);
 
     input.value = '';
@@ -151,7 +151,7 @@ function sendCreateBookPlan() {
         return response.json();
     })
     .then(data => {
-        // Убираем спиннер, как только данные загрузились
+        // 
         messagesContainer.innerHTML = '';
         if (data.plan) {
             addNewBookToListAndOpen(data.bookTitle || 'New book', data.bookId);
@@ -227,13 +227,13 @@ function createBookWindow(bookId, bookTitle) {
 
     fetchBookData(bookId)
         .then(bookData => {
-            console.log('Received data from the book:', bookData); // Вывод объекта bookData в консоль
+            console.log('Received data from the book:', bookData); //  
 
             const bookContent = document.getElementById('book-content');
             bookContent.setAttribute('data-book-id', bookId);
 
-            // Пример обработки текста перед вставкой в HTML
-            let formattedText = bookData.plan.replace(/\n/g, '<br>'); // Преобразование новых строк в <br>
+            //  
+            let formattedText = bookData.plan.replace(/\n/g, '<br>'); //  
 //-----Playg
             bookContent.innerHTML = `
                 <h2>${bookTitle.slice(0, -5)}</h2>
@@ -252,17 +252,17 @@ function createBookWindow(bookId, bookTitle) {
 
             activeBookId = bookId;
 
-            console.log('ЗАПУСК ЦЫКЛА');
-                    console.log('Статус книги:', bookData.state); // Логируем значение state
-        console.log('Тип данных статуса:', typeof bookData.state);
+            console.log('STARTING THE CYCLE');
+                    console.log('Book status:', bookData.state); //  
+        console.log('Status data type:', typeof bookData.state);
 
             // Проверка состояния книги перед запуском проверки прогресса
             if (bookData.state == 'START') {//??????
-                console.log('1-ЗАПУСК ЦЫКЛА');
+                console.log('1-STARTING THE CYCLE');
                 startProgressCheck(bookId);
-                console.log('2-ЗАПУСК ЦЫКЛА');
+                console.log('2-STARTING THE CYCLE');
             } else {
-                console.log('Книга уже завершена или не начала генерацию, проверка прогресса не требуется.');
+                console.log('The book is already completed or has not started generating, no progress check is required.');
             }
         });
 }
@@ -271,12 +271,12 @@ function createBookWindow(bookId, bookTitle) {
 
 
 function startProgressCheck(bookId) {
-    console.log(`Запуск проверки прогресса для книги с ID: ${bookId}`);
+    console.log(`Starting progress check for book with ID: ${bookId}`);
     activeIntervalId = setInterval(() => {
-        console.log(`Проверка активной книги: activeBookId=${activeBookId}, bookId=${bookId}`);
+        console.log(`Checking the active book: activeBookId=${activeBookId}, bookId=${bookId}`);
         
         if (activeBookId !== bookId) {
-            console.log('Книга изменилась, очищаем интервал');
+            console.log('The book has changed, we are clearing the interval');
             clearInterval(activeIntervalId);
             return;
         }
@@ -300,35 +300,35 @@ function startProgressCheck(bookId) {
             return response.json();
         })
         .then(data => {
-            console.log('Ответ от сервера (распарсен):', data);
+            console.log('Response from the server (parsed):', data);
 
             if (activeBookId === bookId) {
                 const progressElement = document.getElementById('progress-percentage');
                 if (progressElement) {
                     const progress = data.progress || '0%';
                     progressElement.textContent = progress;
-                    console.log(`Обновление прогресса: ${progress}`);
+                    console.log(`Progress update: ${progress}`);
                 }
 
                 if (data.message === 'FINISHED') {
-                    console.log('Книга готова, очищаем интервал');
+                    console.log('The book is ready, we clear the interval');
                     clearInterval(activeIntervalId);
                     activeIntervalId = null;
-                    console.log('Вызов функции createBookWindow');
-                    createBookWindow(bookId, 'Ваша книга');
+
+                    createBookWindow(bookId, 'Your book');
                     //
                     clearInterval(activeIntervalId);
                     activeIntervalId = null;
 
                 } else {
-                    console.log(`Текущий статус книги: ${data.message}`);
+                    console.log(`Current status of the book: ${data.message}`);
                 }
             } else {
-                console.log('activeBookId не совпадает с bookId, не обновляем данные');
+                console.log('activeBookId does not match bookId, do not update data');
             }
         })
         .catch(error => {
-            console.error('Ошибка при проверке статуса книги:', error);
+            console.error('Error checking book status:', error);
         });
     }, 10000);
 }
@@ -372,38 +372,38 @@ function downloadBook(bookId) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${jwtToken}` // Добавление токена авторизации из localStorage
+            'Authorization': `Bearer ${jwtToken}` // 
         },
-        body: JSON.stringify({ BookID: bookId }) // Отправка идентификатора книги в теле запроса
+        body: JSON.stringify({ BookID: bookId }) // 
     })
     .then(response => {
-        console.log('Received response:', response); // Логируем ответ от сервера
-        if (response.status === 401) { // Проверка статуса 401 (Unauthorized)
-            window.location.href = 'https://thedisc.xyz/login'; // Перенаправление на страницу входа в случае ошибки авторизации
+        console.log('Received response:', response); // 
+        if (response.status === 401) { //401 (Unauthorized)
+            window.location.href = 'https://thedisc.xyz/login'; //
             return;
         }
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`); // Проверка успешности запроса
+            throw new Error(`HTTP error! status: ${response.status}`); //
         }
-        return response.json(); // Парсинг ответа в формате JSON
+        return response.json(); // 
     })
     .then(data => {
-        console.log('Parsed response data:', data); // Логируем распарсенные данные
+        console.log('Parsed response data:', data); // 
         const downloadUrl = data.downloadUrl;
-        console.log(`Download URL received: ${downloadUrl}`); // Логируем ссылку для скачивания
+        console.log(`Download URL received: ${downloadUrl}`); // 
 
-        // Теперь используем ссылку для скачивания файла
+        //
         const a = document.createElement('a');
         a.href = downloadUrl;
-        a.download = `book-ai-${randomId}.pdf`; // Генерация имени файла с рандомным идентификатором
+        a.download = `book-ai-${randomId}.pdf`; //
         document.body.appendChild(a);
-        a.click(); // Автоматическое скачивание файла
-        a.remove(); // Удаление временного элемента
-        console.log('Download initiated successfully.'); // Лог успешного запуска скачивания
+        a.click(); // 
+        a.remove(); // 
+        console.log('Download initiated successfully.'); // 
     })
     .catch(error => {
-        console.error('Error loading book:', error); // Логирование ошибок
-        alert('Failed to download the book.'); // Уведомление пользователя об ошибке
+        console.error('Error loading book:', error); //
+        alert('Failed to download the book.'); //
     });
 }
 
@@ -420,20 +420,20 @@ function fetchBookData(bookId) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('jwtToken')}` // Добавление токена авторизации из localStorage
+            'Authorization': `Bearer ${localStorage.getItem('jwtToken')}` // 
         },
-        body: JSON.stringify({ BookID: bookId }) // Отправка идентификатора книги в теле запроса
+        body: JSON.stringify({ BookID: bookId }) //
     })
     .then(response => {
-        if (response.status === 401) { // Проверка статуса 401 (Unauthorized)
-            window.location.href = 'https://thedisc.xyz/login'; // Перенаправление на страницу входа в случае ошибки авторизации
+        if (response.status === 401) { //401 (Unauthorized)
+            window.location.href = 'https://thedisc.xyz/login'; //
             return;
         }
-        return response.json(); // Парсинг ответа в формате JSON, если статус ответа успешный
+        return response.json(); // 
     })
     .catch(error => {
-        console.error('Ошибка при получении данных книги:', error); // Логирование ошибки, если произошла ошибка запроса
-        return {}; // Возвращение пустого объекта в случае ошибки
+        console.error('Error retrieving book data:', error); // 
+        return {}; // 
     });
 }
 
@@ -475,25 +475,25 @@ function startBookGeneration(bookId) {
     })
     .then(response => {
         if (response.status === 401) {
-            window.location.href = 'https://thedisc.xyz/login'; // Перенаправление на страницу входа при ошибке 401
+            window.location.href = 'https://thedisc.xyz/login'; //  401
             return;
         }
         return response.json();
     })
     .then(data => {
-        console.log('Response from server:', data); // Логируем ответ от сервера
+        console.log('Response from server:', data); // 
         if (data.message === 'START') {
             console.log('Generation started successfully');
             const bookContent = document.getElementById('book-content');
             const bookMessages = bookContent.querySelector('#book-messages');
             const existingContent = bookMessages ? bookMessages.innerHTML : '';
             
-            // Обновляем только часть с прогрессом, сохраняя существующее содержимое
+            // 
             const progressBar = document.createElement('div');
             progressBar.className = 'chat-progress';
             progressBar.innerHTML = 'Your book is being generated... <span id="progress-percentage">0%</span>';
             
-            // Заменяем существующую панель генерации или добавляем новую
+            //  
             const existingProgressBar = bookContent.querySelector('.chat-progress');
             if (existingProgressBar) {
                 existingProgressBar.replaceWith(progressBar);
@@ -501,27 +501,27 @@ function startBookGeneration(bookId) {
                 bookContent.appendChild(progressBar);
             }
             
-            // Удаляем кнопку "Старт" и поле ввода, если они есть
+            //  
             const startBar = bookContent.querySelector('.start-generation-bar');
             if (startBar) startBar.remove();
             const inputContainer = bookContent.querySelector('.chat-input-container');
             if (inputContainer) inputContainer.remove();
 
-            console.log('Setting activeBookId to:', bookId);  // Логируем установку переменной activeBookId
+            console.log('Setting activeBookId to:', bookId);  //  
             activeBookId = bookId;
 
-            // Проверяем, что старый интервал остановлен, если он существует
+            //  
             if (activeIntervalId) {
                 console.log('Clearing previous interval:', activeIntervalId);
                 clearInterval(activeIntervalId);
                 activeIntervalId = null;
             }
 
-            console.log('Starting progress check...');  // Лог перед запуском функции проверки
-            startProgressCheck(bookId);  // Начало проверки прогресса
-            console.log('Progress check function has been called');  // Лог после вызова функции проверки
+            console.log('Starting progress check...');  //  
+            startProgressCheck(bookId);  //  
+            console.log('Progress check function has been called');  // 
 
-            // Уменьшаем количество кредитов на странице
+            //  
             decreaseCredits();
         } else {
             console.error('Unexpected response:', data);
