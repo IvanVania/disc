@@ -48,23 +48,36 @@
     <script>
         // Функция для проверки аутентификации через API Gateway
         async function checkAuthStatus() {
+            const apiEndpoint = 'https://imm63s55gb.execute-api.us-east-2.amazonaws.com/default/checkAuthLogInPage';
+            const requestHeaders = {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('accessToken') // предполагается, что токен уже хранится в localStorage
+            };
+
+            console.log('Отправляемый запрос:', {
+                method: 'GET',
+                headers: requestHeaders
+            });
+
             try {
-                const response = await fetch('https://imm63s55gb.execute-api.us-east-2.amazonaws.com/default/checkAuthLogInPage', {
+                const response = await fetch(apiEndpoint, {
                     method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + localStorage.getItem('accessToken') // предполагается, что токен уже хранится в localStorage
-                    }
+                    headers: requestHeaders
                 });
+
+                console.log('Ответ от API:', response);
 
                 if (response.ok) {
                     const data = await response.json();
+                    console.log('Данные из ответа:', data);
+
                     if (data.isAuthenticated) {
                         window.location.href = 'https://thedisc.xyz/app';
                     } else {
                         document.getElementById('login-container').style.display = 'block'; // Показать контейнер с кнопкой входа
                     }
                 } else {
+                    console.error('Ошибка HTTP:', response.status, response.statusText);
                     document.getElementById('login-container').style.display = 'block'; // Показать контейнер с кнопкой входа при ошибке
                 }
             } catch (error) {
