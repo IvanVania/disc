@@ -21,7 +21,7 @@ window.onload = function() {
     })
     .then(response => {
         if (response.status === 401) {
-            window.location.href = '/login.html';
+            window.location.href = 'https://thedisc.xyz/login';
             return;
         }
         if (!response.ok) {
@@ -32,7 +32,7 @@ window.onload = function() {
     .then(data => {
         if (data.error) {
             if (data.error === 'Authentication failed') {
-                window.location.href = '/login.html';
+                window.location.href = 'https://thedisc.xyz/login';
             }
         } else {
             if (data.accessToken) {
@@ -66,7 +66,7 @@ window.onload = function() {
 
 function logout() {
     localStorage.removeItem('jwtToken');
-    window.location.href = '/login.html';
+    window.location.href = 'https://thedisc.xyz/login';
 }
 
 function createNewBookWindow() {
@@ -142,7 +142,7 @@ function sendCreateBookPlan() {
     })
     .then(response => {
         if (response.status === 401) {
-            window.location.href = '/login.html';
+            window.location.href = 'https://thedisc.xyz/login';
             return;
         }
         if (!response.ok) {
@@ -194,7 +194,7 @@ function sendRegenerateBookPlan() {
     })
     .then(response => {
         if (response.status === 401) {
-            window.location.href = '/login.html';
+            window.location.href = 'https://thedisc.xyz/login';
             return;
         }
         if (!response.ok) {
@@ -291,7 +291,7 @@ function startProgressCheck(bookId) {
         })
         .then(response => {
             if (response.status === 401) {
-                window.location.href = '/login.html';
+                window.location.href = 'https://thedisc.xyz/login';
                 return;
             }
             if (!response.ok) {
@@ -379,7 +379,7 @@ function downloadBook(bookId) {
     .then(response => {
         console.log('Received response:', response); // Логируем ответ от сервера
         if (response.status === 401) { // Проверка статуса 401 (Unauthorized)
-            window.location.href = '/login.html'; // Перенаправление на страницу входа в случае ошибки авторизации
+            window.location.href = 'https://thedisc.xyz/login'; // Перенаправление на страницу входа в случае ошибки авторизации
             return;
         }
         if (!response.ok) {
@@ -426,7 +426,7 @@ function fetchBookData(bookId) {
     })
     .then(response => {
         if (response.status === 401) { // Проверка статуса 401 (Unauthorized)
-            window.location.href = '/login.html'; // Перенаправление на страницу входа в случае ошибки авторизации
+            window.location.href = 'https://thedisc.xyz/login'; // Перенаправление на страницу входа в случае ошибки авторизации
             return;
         }
         return response.json(); // Парсинг ответа в формате JSON, если статус ответа успешный
@@ -475,7 +475,7 @@ function startBookGeneration(bookId) {
     })
     .then(response => {
         if (response.status === 401) {
-            window.location.href = '/login.html'; // Перенаправление на страницу входа при ошибке 401
+            window.location.href = 'https://thedisc.xyz/login'; // Перенаправление на страницу входа при ошибке 401
             return;
         }
         return response.json();

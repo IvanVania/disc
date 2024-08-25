@@ -20,6 +20,7 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: none; /* Скроем контейнер с кнопкой до проверки */
         }
         .login-container h1 {
             margin-bottom: 20px;
@@ -39,24 +40,51 @@
     </style>
 </head>
 <body>
-    <div class="login-container">
+    <div class="login-container" id="login-container">
         <h1>Добро пожаловать в DiscBook AI</h1>
         <button class="login-btn" onclick="startGoogleAuth()">Войти через Google</button>
     </div>
 
     <script>
+        // Функция для проверки аутентификации через API Gateway
+        async function checkAuthStatus() {
+            try {
+                const response = await fetch('https://imm63s55gb.execute-api.us-east-2.amazonaws.com/default/checkAuthLogInPage', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('accessToken') // предполагается, что токен уже хранится в localStorage
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.isAuthenticated) {
+                        window.location.href = 'https://thedisc.xyz/app';
+                    } else {
+                        document.getElementById('login-container').style.display = 'block'; // Показать контейнер с кнопкой входа
+                    }
+                } else {
+                    document.getElementById('login-container').style.display = 'block'; // Показать контейнер с кнопкой входа при ошибке
+                }
+            } catch (error) {
+                console.error('Ошибка при проверке статуса аутентификации:', error);
+                document.getElementById('login-container').style.display = 'block'; // Показать контейнер с кнопкой входа при ошибке
+            }
+        }
+
         // Функция для инициализации аутентификации через Google
         function startGoogleAuth() {
             const clientId = '473956107015-uaivpkmbdivg4unooq2mmqgat34npcbf.apps.googleusercontent.com'; // Ваш Google Client ID
-            const redirectUri = 'https://discbook.s3.us-east-2.amazonaws.com/main.html';  // Замените на ваш Redirect URI (например, https://example.com/main.html)
+            const redirectUri = 'https://thedisc.xyz/app';  // Замените на ваш Redirect URI
             const scope = 'email profile';  // Укажите необходимые области доступа
             const authUrl = `https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scope}`;
 
             window.location.href = authUrl; // Перенаправляем пользователя на Google для аутентификации
         }
 
-        document.querySelector('.login-btn').addEventListener('click', startGoogleAuth);
+        // Запускаем проверку аутентификации при загрузке страницы
+        window.onload = checkAuthStatus;
     </script>
 </body>
 </html>
-

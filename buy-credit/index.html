@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book AI - Purchase Credits</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap');
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .gradient-button {
+      background: linear-gradient(to right, #6366F1, #EC4899);
+      background-size: 200% 200%;
+      animation: gradient-animation 5s ease infinite;
+    }
+
+    @keyframes gradient-animation {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      background-color: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+    }
+
+    .back-arrow {
+      font-size: 24px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 pt-16">
+  <header class="shadow-md py-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <span class="back-arrow" onclick="window.history.back()">← Back</span>
+    </div>
+  </header>
+
+  <main class="container mx-auto py-16">
+    <section class="mb-8">
+      <h2 class="text-3xl font-extrabold mb-4">Please read before purchasing</h2>
+      <h3 class="text-2xl font-bold mb-4">Policy</h3>
+
+      <h3 class="text-2xl font-bold mb-4">Purchase and Usage Policy</h3>
+
+      <h4 class="text-xl font-semibold mt-4 mb-2">1. Credit Purchase</h4>
+      <ul class="list-disc list-inside text-gray-700 mb-4">
+        <li>By purchasing credits for book generation using our neural network, you agree that all purchases are final and non-refundable. We do not refund money for purchased credits, even if you are not satisfied with the result of the neural network's work.</li>
+        <li>The neural network may generate errors or create content that does not meet your expectations. This is because our system is still developing and is in the beta testing stage, so the quality of content may vary.</li>
+        <li>You should understand that using the neural network involves certain risks, and the result may not always be perfect. We are not responsible for the quality of the created content.</li>
+        <li><strong>Book Delivery Guarantee</strong>: A purchased credit guarantees the final delivery of the book. Even if errors may occur during the generation process, this does not mean that the credit is lost. Your credit ensures the completion of book generation, not just its beginning.</li>
+      </ul>
+
+      <h4 class="text-xl font-semibold mt-4 mb-2">2. Responsibility</h4>
+      <ul class="list-disc list-inside text-gray-700 mb-4">
+        <li>We do not guarantee that the generated content will meet your requirements or expectations. By using our services, you agree that the final result may vary depending on the request and the complexity of the task.</li>
+        <li>All claims regarding the quality of the content will be considered, but refunds or compensations are not provided.</li>
+      </ul>
+
+      <h4 class="text-xl font-semibold mt-4 mb-2">3. How It Works</h4>
+      <ul class="list-disc list-inside text-gray-700 mb-4">
+        <li>The text generation process requires significant computational power. As a result, errors may occur due to server overload, especially when processing a large number of requests simultaneously. We try to minimize such errors, but their complete elimination is not guaranteed.</li>
+        <li>Generating large books takes more time. For books with about 200,000 words, the process can take up to 25 minutes. For smaller books, generation usually takes a few minutes, depending on the complexity and current server load.</li>
+        <li>The current conditions are related to the fact that our system is still in the beta testing stage, so unforeseen failures and errors are possible.</li>
+      </ul>
+
+      <h3 class="text-2xl font-bold mt-6 mb-4">Usage Tips</h3>
+
+      <h4 class="text-xl font-semibold mt-4 mb-2">1. Preparing Book Description</h4>
+      <ul class="list-disc list-inside text-gray-700 mb-4">
+        <li>We strongly recommend using regular chatbots to write a detailed but not too long description of the book before using our services to generate the book. A detailed but concise description significantly increases the likelihood of obtaining a satisfactory result.</li>
+        <li>The book description should be detailed enough for the neural network to accurately understand your request and generate content that will meet your expectations, but avoid overly long descriptions.</li>
+      </ul>
+
+      <h4 class="text-xl font-semibold mt-4 mb-2">2. Formulating Requests</h4>
+      <ul class="list-disc list-inside text-gray-700 mb-4">
+        <li>Clearly formulate requests and provide as many important details as possible to improve the accuracy of text generation.</li>
+        <li>If you have specific wishes for the plot, characters, or style, be sure to specify them in the request.</li>
+      </ul>
+
+      <p class="text-gray-700 mt-4">By following these recommendations, you will be able to use our neural network most effectively for book generation.</p>
+    </section>
+
+    <section>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Option 1 -->
+        <div class="bg-gray-700 rounded-lg p-6 text-center text-white">
+          <h3 class="text-2xl font-bold mb-4">1 Credit</h3>
+          <p class="text-4xl font-bold mb-2">$45</p>
+          <button class="gradient-button text-white font-bold py-2 px-4 rounded-full" onclick="purchaseCredits('1')">
+            Buy 1 Credit
+          </button>
+        </div>
+        <!-- Option 2 -->
+        <div class="bg-gray-700 rounded-lg p-6 text-center text-white">
+          <h3 class="text-2xl font-bold mb-4">10 Credits</h3>
+          <p class="text-4xl font-bold mb-2">$249</p>
+          <button class="gradient-button text-white font-bold py-2 px-4 rounded-full" onclick="purchaseCredits('10')">
+            Buy 10 Credits
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+function purchaseCredits(credits) {
+    console.log(`purchaseCredits function called with credits: ${credits}`);
+
+    const token = localStorage.getItem('jwtToken');  
+    console.log('Retrieved token from localStorage:', token ? 'Token exists' : 'Token is missing');
+
+    if (!token) {
+        console.error('Token is missing. User needs to log in again.');
+        alert('Token is missing. Please log in again.');
+        return;
+    }
+
+    console.log('Preparing fetch request to CreateStripeCheckoutSite API');
+    console.log('Request URL:', 'https://x1cj4iufxb.execute-api.us-east-2.amazonaws.com/default/CreateStripeCheckoutSite');
+    console.log('Request method:', 'POST');
+    console.log('Request headers:', {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token.substring(0, 10) + '...' // Log only part of the token for security
+    });
+    console.log('Request body:', JSON.stringify({ credits: credits }));
+
+    fetch('https://x1cj4iufxb.execute-api.us-east-2.amazonaws.com/default/CreateStripeCheckoutSite', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({
+            credits: credits
+        })
+    })
+    .then(response => {
+        console.log('Received response from API');
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers);
+        
+        if (response.status === 401) { // Проверка статуса 401 (Unauthorized)
+            console.error('Unauthorized access - redirecting to login');
+            window.location.href = 'https://thedisc.xyz/login'; // Перенаправление на новую страницу входа
+            return;
+        }
+
+        return response.json();
+    })
+    .then(data => {
+        if (data) {
+            console.log('Parsed response data:', data);
+            if (data.url) {
+                console.log('Stripe session URL received:', data.url);
+                console.log('Redirecting user to Stripe Checkout page');
+                window.location.href = data.url;
+            } else {
+                console.error('Error: No URL in the response data');
+                alert('Error creating Stripe session');
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Fetch error:', error);
+        console.error('Error details:', error.message);
+        alert('An error occurred while processing the request');
+    });
+}
+
+  </script>
+</body>
+</html>
