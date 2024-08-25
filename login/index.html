@@ -49,11 +49,14 @@
         // Функция для проверки аутентификации через API Gateway
         async function checkAuthStatus() {
             const apiEndpoint = 'https://imm63s55gb.execute-api.us-east-2.amazonaws.com/default/checkAuthLogInPage';
+            const accessToken = localStorage.getItem('accessToken');
             const requestHeaders = {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('accessToken') // предполагается, что токен уже хранится в localStorage
+                'Authorization': 'Bearer ' + accessToken // предполагается, что токен уже хранится в localStorage
             };
 
+            console.log('Запуск проверки аутентификации');
+            console.log('Токен доступа:', accessToken);
             console.log('Отправляемый запрос:', {
                 method: 'GET',
                 headers: requestHeaders
@@ -72,8 +75,10 @@
                     console.log('Данные из ответа:', data);
 
                     if (data.isAuthenticated) {
+                        console.log('Пользователь аутентифицирован, перенаправление...');
                         window.location.href = 'https://thedisc.xyz/app';
                     } else {
+                        console.log('Пользователь не аутентифицирован, показываем кнопку входа');
                         document.getElementById('login-container').style.display = 'block'; // Показать контейнер с кнопкой входа
                     }
                 } else {
@@ -88,11 +93,13 @@
 
         // Функция для инициализации аутентификации через Google
         function startGoogleAuth() {
+            console.log('Запуск аутентификации через Google');
             const clientId = '473956107015-uaivpkmbdivg4unooq2mmqgat34npcbf.apps.googleusercontent.com'; // Ваш Google Client ID
             const redirectUri = 'https://thedisc.xyz/app';  // Замените на ваш Redirect URI
             const scope = 'email profile';  // Укажите необходимые области доступа
             const authUrl = `https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scope}`;
 
+            console.log('Перенаправление на:', authUrl);
             window.location.href = authUrl; // Перенаправляем пользователя на Google для аутентификации
         }
 
