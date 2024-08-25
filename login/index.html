@@ -49,7 +49,7 @@
         // Функция для проверки аутентификации через API Gateway
         async function checkAuthStatus() {
             const apiEndpoint = 'https://imm63s55gb.execute-api.us-east-2.amazonaws.com/default/checkAuthLogInPage';
-            const accessToken = localStorage.getItem('jwtTokenA');
+            const accessToken = localStorage.getItem('jwtToken');
             const requestHeaders = {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + accessToken // предполагается, что токен уже хранится в localStorage
