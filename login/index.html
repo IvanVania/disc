@@ -49,7 +49,7 @@
         // Функция для проверки аутентификации через API Gateway
         async function checkAuthStatus() {
             const apiEndpoint = 'https://imm63s55gb.execute-api.us-east-2.amazonaws.com/default/checkAuthLogInPage';
-            const accessToken = localStorage.getItem('jwtToken');
+            const accessToken = localStorage.getItem('jwtTokenA');
             const requestHeaders = {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + accessToken // предполагается, что токен уже хранится в localStorage
@@ -76,7 +76,7 @@
 
                     if (data.isAuthenticated) {
                         console.log('Пользователь аутентифицирован, перенаправление...');
-                        // window.location.href = 'https://thedisc.xyz/app';
+                        window.location.href = 'https://thedisc.xyz/app';
                     } else {
                         console.log('Пользователь не аутентифицирован, показываем кнопку входа');
                         document.getElementById('login-container').style.display = 'block'; // Показать контейнер с кнопкой входа
