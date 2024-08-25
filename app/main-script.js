@@ -21,7 +21,7 @@ window.onload = function() {
     })
     .then(response => {
         if (response.status === 401) {
-            // window.location.href = 'https://thedisc.xyz/login';
+            window.location.href = 'https://thedisc.xyz/login';
             return;
         }
         if (!response.ok) {
@@ -32,7 +32,7 @@ window.onload = function() {
     .then(data => {
         if (data.error) {
             if (data.error === 'Authentication failed') {
-                // window.location.href = 'https://thedisc.xyz/login';
+                window.location.href = 'https://thedisc.xyz/login';
             }
         } else {
             if (data.accessToken) {
