@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DiscBook AI</title>
+    <link rel="icon" href="logo.svg" type="image/x-icon"> <!--   -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -22,7 +23,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         .login-container {
-            display: none; /* Скроем контейнер с кнопкой до проверки */
+            display: none; 
         }
         .login-container h1 {
             margin-bottom: 20px;
@@ -64,12 +65,12 @@
     </div>
 
     <div class="login-container" id="login-container">
-        <h1>Добро пожаловать в DiscBook AI</h1>
-        <button class="login-btn" onclick="startGoogleAuth()">Войти через Google</button>
+        <h1>Welcome to DiscBook AI</h1>
+        <button class="login-btn" onclick="startGoogleAuth()">Login with Google</button>
     </div>
 
     <script>
-        // Функция для проверки аутентификации через API Gateway
+        // 
         async function checkAuthStatus() {
             const apiEndpoint = 'https://imm63s55gb.execute-api.us-east-2.amazonaws.com/default/checkAuthLogInPage';
             const accessToken = localStorage.getItem('jwtToken');
