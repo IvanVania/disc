@@ -70,11 +70,12 @@ function logout() {
 }
 
 function createNewBookWindow() {
-    activeBookId = null;
-    activeIntervalId = null;
+    // Clear any active intervals
     clearInterval(activeIntervalId);
+    activeIntervalId = null;
+    activeBookId = null;
 
-    //
+    // Remove active class from all chat list items
     const chatList = document.getElementById('chat-list');
     const allItems = chatList.querySelectorAll('li');
     allItems.forEach(item => item.classList.remove('active'));
@@ -110,6 +111,9 @@ function createNewBookWindow() {
             <button class="chat-send-btn" onclick="sendCreateBookPlan()">Create a plan</button>
         </div>
     `;
+
+    // Remove the data-book-id attribute from the book content div
+    bookContent.removeAttribute('data-book-id');
 }
 
 
