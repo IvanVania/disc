@@ -280,12 +280,22 @@ function createBookWindow(bookId, bookTitle) {
 
 function startProgressCheck(bookId) {
     console.log(`Starting progress check for book with ID: ${bookId}`);
+    
+    // Очищаем предыдущий интервал, если он существует
+    if (activeIntervalId) {
+        clearInterval(activeIntervalId);
+        activeIntervalId = null;
+    }
+    
+    activeBookId = bookId;
+    
     activeIntervalId = setInterval(() => {
         console.log(`Checking the active book: activeBookId=${activeBookId}, bookId=${bookId}`);
         
         if (activeBookId !== bookId) {
             console.log('The book has changed, we are clearing the interval');
             clearInterval(activeIntervalId);
+            activeIntervalId = null;
             return;
         }
 
@@ -324,10 +334,6 @@ function startProgressCheck(bookId) {
                     activeIntervalId = null;
 
                     createBookWindow(bookId, 'Your book');
-                    //
-                    clearInterval(activeIntervalId);
-                    activeIntervalId = null;
-
                 } else {
                     console.log(`Current status of the book: ${data.message}`);
                 }
