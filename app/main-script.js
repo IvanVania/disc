@@ -494,10 +494,7 @@ function startBookGeneration(bookId) {
         } else if (response.status === 403) {
             window.location.href = 'https://thedisc.xyz/buy-credit/'; // Перенаправление на страницу покупки кредитов при ошибке 403
             return;
-        } else if (!response.ok) {
-        // 
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
+        } 
         return response.json();
     })
     .then(data => {
