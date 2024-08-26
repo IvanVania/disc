@@ -70,11 +70,9 @@ function logout() {
 }
 
 function createNewBookWindow() {
-    if (activeIntervalId) {
-        clearInterval(activeIntervalId);
-        activeIntervalId = null;
-    }
     activeBookId = null;
+    activeIntervalId = null;
+    clearInterval(activeIntervalId);
 
     const bookContent = document.getElementById('book-content');
     bookContent.innerHTML = `
