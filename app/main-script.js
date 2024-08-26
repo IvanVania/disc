@@ -74,6 +74,7 @@ function createNewBookWindow() {
         clearInterval(activeIntervalId);
         activeIntervalId = null;
     }
+    activeBookId = null;
 
     const bookContent = document.getElementById('book-content');
     bookContent.innerHTML = `
