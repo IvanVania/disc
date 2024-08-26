@@ -74,6 +74,11 @@ function createNewBookWindow() {
     activeIntervalId = null;
     clearInterval(activeIntervalId);
 
+    //
+    const chatList = document.getElementById('chat-list');
+    const allItems = chatList.querySelectorAll('li');
+    allItems.forEach(item => item.classList.remove('active'));
+
     const bookContent = document.getElementById('book-content');
     bookContent.innerHTML = `
         <h2>New book</h2>
