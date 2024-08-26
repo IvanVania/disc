@@ -541,6 +541,9 @@ function startBookGeneration(bookId) {
         }
     })
     .catch(error => {
+    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+        return;
+    }
         console.error('Error starting generation:', error);
         alert('Error: Failed to start book generation');
     });
