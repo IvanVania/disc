@@ -359,6 +359,13 @@ function renderBookStateUI(state, bookId) {
         return `
             <div class="chat-finished">Your book is ready. <a href="#" class="download-link" onclick="downloadBook('${bookId}')">Download</a></div>
         `;
+    } else if (state === 'ERROR') {
+        return `
+            <div class="chat-error">
+                <span>Generation of the book was stopped due to an error, but you can continue the process.</span>
+                <button class="chat-continue-btn" style="background-color: red;" onclick="continueAfterError('${bookId}')">Continue</button>
+            </div>
+        `;
     } else {
         return `
             <div class="start-generation-bar">
@@ -371,6 +378,42 @@ function renderBookStateUI(state, bookId) {
             </div>
         `;
     }
+}
+
+function continueAfterError(bookId) {
+    const jwtToken = localStorage.getItem('jwtToken');
+    
+    fetch('https://auqh8afmpc.execute-api.us-east-2.amazonaws.com/default/start-after-error-continue', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${jwtToken}`
+        },
+        body: JSON.stringify({ bookId: bookId })
+    })
+    .then(response => {
+        if (response.status === 401) {
+            window.location.href = 'https://thedisc.xyz/login'; // 401 Unauthorized
+            return;
+        }
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Response from continueAfterError:', data);
+        if (data.message === 'CONTINUE') {
+            alert('Generation resumed successfully.');
+            // Здесь можно добавить дополнительную логику для обновления интерфейса, если необходимо.
+        } else {
+            alert('Error: Failed to continue book generation.');
+        }
+    })
+    .catch(error => {
+        console.error('Error continuing generation:', error);
+        alert('Error: Failed to continue book generation.');
+    });
 }
 
 
