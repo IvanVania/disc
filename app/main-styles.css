@@ -305,3 +305,9 @@ body {
     transform: scale(1.05); 
 }
 
+.error-text {
+    color: red;
+    background-color: transparent; 
+    border: none; 
+    font-weight: bold;  
+}
