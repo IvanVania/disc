@@ -71,6 +71,7 @@ function logout() {
 
 function createNewBookWindow() {
     // Clear any active intervals
+//
     clearInterval(activeIntervalId);
     activeIntervalId = null;
     activeBookId = null;
@@ -264,7 +265,7 @@ function createBookWindow(bookId, bookTitle) {
                     console.log('Book status:', bookData.state); //  
         console.log('Status data type:', typeof bookData.state);
 
-            // Проверка состояния книги перед запуском проверки прогресса
+            // 
             if (bookData.state == 'START') {//??????
                 console.log('1-STARTING THE CYCLE');
                 startProgressCheck(bookId);
@@ -281,7 +282,7 @@ function createBookWindow(bookId, bookTitle) {
 function startProgressCheck(bookId) {
     console.log(`Starting progress check for book with ID: ${bookId}`);
     
-    // Очищаем предыдущий интервал, если он существует
+    //  
     if (activeIntervalId) {
         clearInterval(activeIntervalId);
         activeIntervalId = null;
@@ -363,7 +364,7 @@ function renderBookStateUI(state, bookId) {
         return `
             <div class="chat-error">
                 <span>Generation of the book was stopped due to an error, but you can continue the process.</span>
-                <button class="chat-continue-btn" style="background-color: red;" onclick="continueAfterError('${bookId}')">Continue</button>
+                <button class="chat-continue-btn error-text" onclick="continueAfterError('${bookId}')">Continue</button>
             </div>
         `;
     } else {
@@ -395,7 +396,7 @@ function continueAfterError(bookId) {
         if (response.status === 401) {
             window.location.href = 'https://thedisc.xyz/login'; // 401 Unauthorized
             return;
-        }
+        }1
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -404,8 +405,8 @@ function continueAfterError(bookId) {
     .then(data => {
         console.log('Response from continueAfterError:', data);
         if (data.message === 'CONTINUE') {
-            alert('Generation resumed successfully.');
-            // Здесь можно добавить дополнительную логику для обновления интерфейса, если необходимо.
+            //
+            createBookWindow(bookId, 'Your book');
         } else {
             alert('Error: Failed to continue book generation.');
         }
@@ -415,6 +416,8 @@ function continueAfterError(bookId) {
         alert('Error: Failed to continue book generation.');
     });
 }
+
+
 
 
 function downloadBook(bookId) {
@@ -535,9 +538,10 @@ function startBookGeneration(bookId) {
             window.location.href = 'https://thedisc.xyz/login'; //  401 Unauthorized
             return;
         } else if (response.status === 403) {
-            window.location.href = 'https://thedisc.xyz/buy-credit/'; // Перенаправление на страницу покупки кредитов при ошибке 403
+            window.location.href = 'https://thedisc.xyz/buy-credit/'; //  
             return;
         } 
+        
         return response.json();
     })
     .then(data => {
@@ -584,9 +588,9 @@ function startBookGeneration(bookId) {
         }
     })
     .catch(error => {
-    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-        return;
-    }
+
+
+
         console.error('Error starting generation:', error);
         alert('Error: Failed to start book generation');
     });
