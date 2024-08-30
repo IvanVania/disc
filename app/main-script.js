@@ -118,13 +118,25 @@ function createNewBookWindow() {
 }
 
 
+let isPlanCreationInProgress = false; // 
+
 function sendCreateBookPlan() {
+    if (isPlanCreationInProgress) {
+        console.log("Plan creation already in progress.");
+        return; //  
+    }
+
+    isPlanCreationInProgress = true; //  
+
     const input = document.getElementById('book-input');
     const wordNumberSelect = document.getElementById('word-number-select');
     const message = input.value;
     const wordNumber = wordNumberSelect.value;
 
-    if (!message) return;
+    if (!message) {
+        isPlanCreationInProgress = false; //  
+        return;
+    }
 
     const payload = {
         RequestText: message,
@@ -171,12 +183,25 @@ function sendCreateBookPlan() {
     .catch(error => {
         console.error('Error:', error);
         messagesContainer.innerHTML = `<div>Error: Failed to get book plan</div>`;
+    })
+    .finally(() => {
+        isPlanCreationInProgress = false; // 
     });
 }
 
 
 
+
+let isRegenerationInProgress = false; // 
+
 function sendRegenerateBookPlan() {
+    if (isRegenerationInProgress) {
+        console.log("Regeneration already in progress.");
+        return; //  
+    }
+
+    isRegenerationInProgress = true; //  
+
     const input = document.getElementById('book-input');
     const message = input.value;
     const bookId = document.getElementById('book-content').getAttribute('data-book-id');
@@ -221,8 +246,12 @@ function sendRegenerateBookPlan() {
     .catch(error => {
         console.error('Ошибка:', error);
         messagesContainer.innerHTML = `<div>Error: Failed to regenerate book plan</div>`;
+    })
+    .finally(() => {
+        isRegenerationInProgress = false; //  
     });
 }
+
 
 
 let activeIntervalId = null;
@@ -420,7 +449,16 @@ function continueAfterError(bookId) {
 
 
 
+let isDownloadInProgress = false; //  
+
 function downloadBook(bookId) {
+    if (isDownloadInProgress) {
+        console.log("Download already in progress for book:", bookId);
+        return; // 
+    }
+
+    isDownloadInProgress = true; // 
+
     const jwtToken = localStorage.getItem('jwtToken');
     
     console.log(`Starting download for book with ID: ${bookId}`);
@@ -464,8 +502,12 @@ function downloadBook(bookId) {
     .catch(error => {
         console.error('Error loading book:', error); //
         alert('Failed to download the book.'); //
+    })
+    .finally(() => {
+        isDownloadInProgress = false; // 
     });
 }
+
 
 
 
@@ -517,7 +559,16 @@ function addNewBookToListAndOpen(bookTitle, bookId) {
     createBookWindow(bookId, bookTitle);
 }
 
+let isGenerationInProgress = false; //  
+
 function startBookGeneration(bookId) {
+    if (isGenerationInProgress) {
+        console.log("Generation already in progress for book:", bookId);
+        return; //  
+    }
+
+    isGenerationInProgress = true; // 
+    
     console.log("Start generation for book:", bookId);
 
     const jwtToken = localStorage.getItem('jwtToken');
@@ -535,10 +586,10 @@ function startBookGeneration(bookId) {
     })
     .then(response => {
         if (response.status === 401) {
-            window.location.href = 'https://thedisc.xyz/login'; //  401 Unauthorized
+            window.location.href = 'https://thedisc.xyz/login'; // 401 Unauthorized
             return;
         } else if (response.status === 403) {
-            window.location.href = 'https://thedisc.xyz/buy-credit/'; //  
+            window.location.href = 'https://thedisc.xyz/buy-credit/'; 
             return;
         } 
         
@@ -588,13 +639,14 @@ function startBookGeneration(bookId) {
         }
     })
     .catch(error => {
-
-
-
         console.error('Error starting generation:', error);
         alert('Error: Failed to start book generation');
+    })
+    .finally(() => {
+        isGenerationInProgress = false; //  
     });
 }
+
 
 
 function decreaseCredits() {
