@@ -559,93 +559,79 @@ function addNewBookToListAndOpen(bookTitle, bookId) {
     createBookWindow(bookId, bookTitle);
 }
 
-let isGenerationInProgress = false; //  
+let isPlanCreationInProgress = false; // 
 
-function startBookGeneration(bookId) {
-    if (isGenerationInProgress) {
-        console.log("Generation already in progress for book:", bookId);
+function sendCreateBookPlan() {
+    if (isPlanCreationInProgress) {
+        console.log("Plan creation already in progress.");
         return; //  
     }
 
-    isGenerationInProgress = true; // 
-    
-    console.log("Start generation for book:", bookId);
+    isPlanCreationInProgress = true; //  
 
-    const jwtToken = localStorage.getItem('jwtToken');
+    const input = document.getElementById('book-input');
+    const wordNumberSelect = document.getElementById('word-number-select');
+    const message = input.value;
+    const wordNumber = wordNumberSelect.value;
+
+    if (!message) {
+        isPlanCreationInProgress = false; // 
+        return;
+    }
+
     const payload = {
-        bookId: bookId
+        RequestText: message,
+        WordNumber: parseInt(wordNumber)
     };
 
-    fetch('https://gurn9gbvb5.execute-api.us-east-2.amazonaws.com/default/startGenerateBook', {
+    console.log('Data sent:', payload);
+
+    const messagesContainer = document.getElementById('book-messages');
+    const spinner = document.createElement('div');
+    spinner.className = 'loading-spinner';
+    messagesContainer.innerHTML = '';  //  
+    messagesContainer.appendChild(spinner);
+
+    input.value = '';
+
+    fetch('https://8cs5141png.execute-api.us-east-2.amazonaws.com/default/CreateBookPlan', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${jwtToken}`
+            'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`
         },
         body: JSON.stringify(payload)
     })
     .then(response => {
         if (response.status === 401) {
-            window.location.href = 'https://thedisc.xyz/login'; // 401 Unauthorized
+            window.location.href = 'https://thedisc.xyz/login';
             return;
-        } else if (response.status === 403) {
-            window.location.href = 'https://thedisc.xyz/buy-credit/'; 
-            return;
-        } 
-        
+        }
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         return response.json();
     })
     .then(data => {
-        console.log('Response from server:', data); 
-        if (data.message === 'START') {
-            console.log('Generation started successfully');
-            const bookContent = document.getElementById('book-content');
-            const bookMessages = bookContent.querySelector('#book-messages');
-            const existingContent = bookMessages ? bookMessages.innerHTML : '';
-            
-            const progressBar = document.createElement('div');
-            progressBar.className = 'chat-progress';
-            progressBar.innerHTML = 'Your book is being generated... <span id="progress-percentage">0%</span>';
-            
-            const existingProgressBar = bookContent.querySelector('.chat-progress');
-            if (existingProgressBar) {
-                existingProgressBar.replaceWith(progressBar);
-            } else {
-                bookContent.appendChild(progressBar);
-            }
-            
-            const startBar = bookContent.querySelector('.start-generation-bar');
-            if (startBar) startBar.remove();
-            const inputContainer = bookContent.querySelector('.chat-input-container');
-            if (inputContainer) inputContainer.remove();
+        // Логируем полученный объект
+        console.log('Received data:', data);
 
-            console.log('Setting activeBookId to:', bookId);  
-            activeBookId = bookId;
-
-            if (activeIntervalId) {
-                console.log('Clearing previous interval:', activeIntervalId);
-                clearInterval(activeIntervalId);
-                activeIntervalId = null;
-            }
-
-            console.log('Starting progress check...');  
-            startProgressCheck(bookId);  
-            console.log('Progress check function has been called');  
-
-            decreaseCredits();
+        messagesContainer.innerHTML = '';
+        if (data.plan) {
+            addNewBookToListAndOpen(data.bookTitle || 'New book', data.bookId);
         } else {
-            console.error('Unexpected response:', data);
-            alert('Error: Failed to start book generation');
+            messagesContainer.innerHTML = `<div>Error: ${data.error || 'Unexpected response from the server'}</div>`;
         }
     })
     .catch(error => {
-        console.error('Error starting generation:', error);
-        alert('Error: Failed to start book generation');
+        console.error('Error:', error);
+        messagesContainer.innerHTML = `<div>Error: Failed to get book plan</div>`;
     })
     .finally(() => {
-        isGenerationInProgress = false; //  
+        isPlanCreationInProgress = false; // 
     });
 }
+
 
 
 
