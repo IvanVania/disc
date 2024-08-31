@@ -559,7 +559,84 @@ function addNewBookToListAndOpen(bookTitle, bookId) {
     createBookWindow(bookId, bookTitle);
 }
 
+function startBookGeneration(bookId) {
+    console.log("Start generation for book:", bookId);
 
+    const jwtToken = localStorage.getItem('jwtToken');
+    const payload = {
+        bookId: bookId
+    };
+
+    fetch('https://gurn9gbvb5.execute-api.us-east-2.amazonaws.com/default/startGenerateBook', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${jwtToken}`
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(response => {
+        if (response.status === 401) {
+            window.location.href = 'https://thedisc.xyz/login'; //  401 Unauthorized
+            return;
+        } else if (response.status === 403) {
+            window.location.href = 'https://thedisc.xyz/buy-credit/'; //  
+            return;
+        } 
+        
+        return response.json();
+    })
+    .then(data => {
+        console.log('Response from server:', data); 
+        if (data.message === 'START') {
+            console.log('Generation started successfully');
+            const bookContent = document.getElementById('book-content');
+            const bookMessages = bookContent.querySelector('#book-messages');
+            const existingContent = bookMessages ? bookMessages.innerHTML : '';
+            
+            const progressBar = document.createElement('div');
+            progressBar.className = 'chat-progress';
+            progressBar.innerHTML = 'Your book is being generated... <span id="progress-percentage">0%</span>';
+            
+            const existingProgressBar = bookContent.querySelector('.chat-progress');
+            if (existingProgressBar) {
+                existingProgressBar.replaceWith(progressBar);
+            } else {
+                bookContent.appendChild(progressBar);
+            }
+            
+            const startBar = bookContent.querySelector('.start-generation-bar');
+            if (startBar) startBar.remove();
+            const inputContainer = bookContent.querySelector('.chat-input-container');
+            if (inputContainer) inputContainer.remove();
+
+            console.log('Setting activeBookId to:', bookId);  
+            activeBookId = bookId;
+
+            if (activeIntervalId) {
+                console.log('Clearing previous interval:', activeIntervalId);
+                clearInterval(activeIntervalId);
+                activeIntervalId = null;
+            }
+
+            console.log('Starting progress check...');  
+            startProgressCheck(bookId);  
+            console.log('Progress check function has been called');  
+
+            decreaseCredits();
+        } else {
+            console.error('Unexpected response:', data);
+            alert('Error: Failed to start book generation');
+        }
+    })
+    .catch(error => {
+
+
+
+        console.error('Error starting generation:', error);
+        alert('Error: Failed to start book generation');
+    });
+}
 
 function decreaseCredits() {
     const creditsElement = document.getElementById('credits');
