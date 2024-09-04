@@ -90,17 +90,22 @@
                     if (data.isAuthenticated) {
                         window.location.href = 'https://thedisc.xyz/app';
                     } else {
-                        document.getElementById('loading-container').style.display = 'none'; // 
+                        //  
+                        localStorage.removeItem('jwtToken');
+                        document.getElementById('loading-container').style.display = 'none'; //  
                         document.getElementById('login-container').style.display = 'block'; //  
                     }
                 } else {
-                    document.getElementById('loading-container').style.display = 'none'; //  
+                    // 
+                    localStorage.removeItem('jwtToken');
+                    document.getElementById('loading-container').style.display = 'none'; // 
                     document.getElementById('login-container').style.display = 'block'; //  
                 }
             } catch (error) {
                 console.error('Ошибка при проверке статуса аутентификации:', error);
+                localStorage.removeItem('jwtToken'); // 
                 document.getElementById('loading-container').style.display = 'none'; //  
-                document.getElementById('login-container').style.display = 'block'; //  
+                document.getElementById('login-container').style.display = 'block'; // 
             }
         }
 
