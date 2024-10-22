@@ -103,11 +103,11 @@ function createNewBookWindow() {
                 <option value="130000">130 000 words</option>
                 <option value="140000">140 000 words</option>
                 <option value="150000">150 000 words</option>
-                <option value="160000">160 000 words</option>
-                <option value="170000">170 000 words</option>
-                <option value="180000">180 000 words</option>
-                <option value="190000">190 000 words</option>
-                <option value="200000">200 000 words</option>
+                // <option value="160000">160 000 words</option>
+                // <option value="170000">170 000 words</option>
+                // <option value="180000">180 000 words</option>
+                // <option value="190000">190 000 words</option>
+                // <option value="200000">200 000 words</option>
             </select>
             <button class="chat-send-btn" onclick="sendCreateBookPlan()">Create a plan</button>
         </div>
