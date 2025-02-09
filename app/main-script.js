@@ -253,8 +253,14 @@ function createBuyCreditsButton() {
         buyCreditsBtn.style.boxShadow = "0 2px 10px rgba(0,0,0,0.1)";
     };
     
+    // При клике перенаправляем на страницу buy-credit
+    buyCreditsBtn.onclick = () => {
+        window.location.href = "https://thedisc.xyz/buy-credit/";
+    };
+    
     return buyCreditsBtn;
 }
+
 
 function createProfileContainer() {
     const profileContainer = document.createElement("div");
