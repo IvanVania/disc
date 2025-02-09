@@ -2123,7 +2123,7 @@ function createInputPanel3(messagesArea, bookData) {
   panel.appendChild(statusText);
 
  
-  const duration = 10 * 60 * 1000; //  
+  const duration = 25 * 60 * 1000; //  
   let baseProgress = 0;
   let startTime = Date.now();
   let isFetching = false;
@@ -2787,18 +2787,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
