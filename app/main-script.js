@@ -25,7 +25,7 @@ function updateUI(data) {
     }
 
     // Print original array to terminal
-    printArray('ORIGINAL BOOKS ARRAY', data.books);
+    // printArray('ORIGINAL BOOKS ARRAY', data.books);
 
     const booksList = document.getElementById('books-list');
     booksList.innerHTML = '';
@@ -45,7 +45,7 @@ function updateUI(data) {
         );
 
         // Print sorted array to terminal
-        printArray('SORTED BOOKS ARRAY', sortedBooks);
+        // printArray('SORTED BOOKS ARRAY', sortedBooks);
 
         // Create cells from sorted array
         sortedBooks.forEach(book => {
