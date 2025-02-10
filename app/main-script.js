@@ -898,8 +898,8 @@ function updateUI(data) {
     }
 
     // 
-    console.log('=== ORIGINAL ARRAY ===');
-    console.table(data.books);
+    // console.log('=== ORIGINAL ARRAY ===');
+    // console.table(data.books);
 
     const booksList = document.getElementById('books-list');
     booksList.innerHTML = '';
@@ -910,8 +910,8 @@ function updateUI(data) {
         });
         
         //  
-        console.log('=== SORTED ARRAY ===');
-        console.table(sortedBooks);
+        // console.log('=== SORTED ARRAY ===');
+        // console.table(sortedBooks);
 
         sortedBooks.forEach(book => {
             const bookItem = createBookItem(book);
