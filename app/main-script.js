@@ -2116,14 +2116,14 @@ function createInputPanel3(messagesArea, bookData) {
   statusText.innerHTML = `Your book is being generated...<br>
         <span style="font-size: 14px; color: #64748b; font-weight: 400">
             
-        Average generation time 10-15 minutes
+        Average generation time 20-35 minutes. Time may change due to server overload.
         </span>`;
 
   panel.appendChild(progressContainer); // Estimated time: 35 minutes remaining
   panel.appendChild(statusText);
 
  
-  const duration = 25 * 60 * 1000; //  
+  const duration = 59 * 60 * 1000; //  
   let baseProgress = 0;
   let startTime = Date.now();
   let isFetching = false;
