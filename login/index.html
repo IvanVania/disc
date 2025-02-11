@@ -102,7 +102,7 @@
                     document.getElementById('login-container').style.display = 'block'; //  
                 }
             } catch (error) {
-                console.error('Ошибка при проверке статуса аутентификации:', error);
+                console.error('Error checking authentication status:', error);
                 localStorage.removeItem('jwtToken'); // 
                 document.getElementById('loading-container').style.display = 'none'; //  
                 document.getElementById('login-container').style.display = 'block'; // 
