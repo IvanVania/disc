@@ -131,7 +131,7 @@ window.onload = function () {
 
 function logout() {
     localStorage.removeItem('jwtToken');
-    window.location.href = 'https://ivanvania.github.io/testRepository/login/';
+    window.location.href = 'https://thedisc.xyz/login/';
 }
 
 
