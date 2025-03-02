@@ -1487,12 +1487,116 @@ function createActionButtons(messagesArea, textarea) {
 
 
 
+// let isPlanCreationInProgress = false;
+
+// function sendCreateBookPlan() {
+//   if (isPlanCreationInProgress) { 
+//     return;
+//   }
+//   isPlanCreationInProgress = true;
+
+//   const textarea = document.getElementById("chat-text-input");
+//   const wordNumberSelect = document.getElementById("word-count-selector");
+//   const requestText = textarea.value.trim();
+//   const wordNumber = parseInt(wordNumberSelect.value, 10);
+
+//   if (!requestText) { 
+//     isPlanCreationInProgress = false;
+//     return;
+//   }
+
+// //
+//             // addMessage(textarea.value); //???
+
+
+//   const payload = {
+//     RequestText: requestText,
+//     WordNumber: wordNumber
+//   }; 
+
+
+//   const messagesContainer = document.getElementById('chat-messages-area');
+//   messagesContainer.innerHTML = '';
+//   const spinner = document.createElement('div');
+//   spinner.className = 'loading-spinner';
+//   messagesContainer.appendChild(spinner);
+
+ 
+//   textarea.value = '';
+//   textarea.style.height = '100px';
+
+ 
+//   if (window.loadingIndicator && typeof window.loadingIndicator.startLoading === 'function') { 
+//     window.loadingIndicator.startLoading();
+//   }
+
+ 
+//   fetch('https://l71ibhfxdj.execute-api.us-east-2.amazonaws.com/default/', {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//       'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`
+//     },
+//     body: JSON.stringify(payload)
+//   })
+//     .then(response => { 
+//       if (response.status === 401) { 
+//         window.location.href = 'https://thedisc.xyz/login';
+//         throw new Error('Unauthorized');
+//       }
+//       if (!response.ok) {
+//         throw new Error(`HTTP error! status: ${response.status}`);
+//       }
+//       return response.json();
+//     })
+//     .then(data => { 
+//       messagesContainer.innerHTML = '';
+
+//       if (data.plan && data.bookId) {  
+//         addMessage(messagesContainer, data.plan);
+
+
+//         if (typeof addNewBookToListAndOpen === 'function') { 
+//           addNewBookToListAndOpen(data.title || 'New Book', data.bookId);
+//         } else {
+//           console.error("Function addNewBookToListAndOpen is not defined.");
+//         }
+
+ 
+//         const inputPanelContainer = document.getElementById('input-panel');
+//         if (inputPanelContainer && inputPanelContainer.parentNode) { 
+//           const newInputPanel = createInputPanel2(messagesContainer);
+//           inputPanelContainer.parentNode.replaceChild(newInputPanel, inputPanelContainer);
+//         } else { 
+//         }
+//       } else {
+//         console.error("Unexpected API response, missing plan or bookId:", data);
+//         // messagesContainer.innerHTML = `<div>An error occurred, sorry, try again another time</div>`;
+//         messagesContainer.innerHTML = '<div style="padding: 16px; background: #fee2e2; border: 1px solid #fecaca; border-radius: 8px; color: #dc2626; font-family: Arial;">An error occurred, sorry, try again another time</div>';
+//       }
+//     })
+//     .catch(error => {
+//       console.error('API error:', error);
+//       // messagesContainer.innerHTML = `<div>An error occurred, sorry, try again another time</div>`;
+//       messagesContainer.innerHTML = '<div style="padding: 16px; background: #fee2e2; border: 1px solid #fecaca; border-radius: 8px; color: #dc2626; font-family: Arial;">An error occurred, sorry, try again another time</div>';
+//     })
+//     .finally(() => {
+//       isPlanCreationInProgress = false;
+//       if (window.loadingIndicator && typeof window.loadingIndicator.stopLoading === 'function') { 
+//         window.loadingIndicator.stopLoading();
+//       }
+//     });
+// }
+//
+
+//
+let ws;
 let isPlanCreationInProgress = false;
+let accumulatedText = "";
+
 
 function sendCreateBookPlan() {
-  if (isPlanCreationInProgress) { 
-    return;
-  }
+  if (isPlanCreationInProgress) return;
   isPlanCreationInProgress = true;
 
   const textarea = document.getElementById("chat-text-input");
@@ -1500,93 +1604,125 @@ function sendCreateBookPlan() {
   const requestText = textarea.value.trim();
   const wordNumber = parseInt(wordNumberSelect.value, 10);
 
-  if (!requestText) { 
+  if (!requestText) {
     isPlanCreationInProgress = false;
     return;
   }
 
-//
-            // addMessage(textarea.value); //???
-
-
-  const payload = {
-    RequestText: requestText,
-    WordNumber: wordNumber
-  }; 
-
-
-  const messagesContainer = document.getElementById('chat-messages-area');
-  messagesContainer.innerHTML = '';
-  const spinner = document.createElement('div');
-  spinner.className = 'loading-spinner';
-  messagesContainer.appendChild(spinner);
-
- 
-  textarea.value = '';
-  textarea.style.height = '100px';
-
- 
-  if (window.loadingIndicator && typeof window.loadingIndicator.startLoading === 'function') { 
+  //
+  accumulatedText = "";
+  const messagesContainer = document.getElementById("chat-messages-area");
+  messagesContainer.innerHTML = "";
+  
+  if (window.loadingIndicator && typeof window.loadingIndicator.startLoading === "function") {
     window.loadingIndicator.startLoading();
   }
 
- 
-  fetch('https://l71ibhfxdj.execute-api.us-east-2.amazonaws.com/default/', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`
-    },
-    body: JSON.stringify(payload)
-  })
-    .then(response => { 
-      if (response.status === 401) { 
-        window.location.href = 'https://thedisc.xyz/login';
-        throw new Error('Unauthorized');
-      }
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(data => { 
-      messagesContainer.innerHTML = '';
-
-      if (data.plan && data.bookId) {  
-        addMessage(messagesContainer, data.plan);
-
-
-        if (typeof addNewBookToListAndOpen === 'function') { 
-          addNewBookToListAndOpen(data.title || 'New Book', data.bookId);
-        } else {
-          console.error("Function addNewBookToListAndOpen is not defined.");
-        }
-
- 
-        const inputPanelContainer = document.getElementById('input-panel');
-        if (inputPanelContainer && inputPanelContainer.parentNode) { 
-          const newInputPanel = createInputPanel2(messagesContainer);
-          inputPanelContainer.parentNode.replaceChild(newInputPanel, inputPanelContainer);
-        } else { 
-        }
-      } else {
-        console.error("Unexpected API response, missing plan or bookId:", data);
-        // messagesContainer.innerHTML = `<div>An error occurred, sorry, try again another time</div>`;
-        messagesContainer.innerHTML = '<div style="padding: 16px; background: #fee2e2; border: 1px solid #fecaca; border-radius: 8px; color: #dc2626; font-family: Arial;">An error occurred, sorry, try again another time</div>';
-      }
-    })
-    .catch(error => {
-      console.error('API error:', error);
-      // messagesContainer.innerHTML = `<div>An error occurred, sorry, try again another time</div>`;
-      messagesContainer.innerHTML = '<div style="padding: 16px; background: #fee2e2; border: 1px solid #fecaca; border-radius: 8px; color: #dc2626; font-family: Arial;">An error occurred, sorry, try again another time</div>';
-    })
-    .finally(() => {
+  //
+  if (!ws || ws.readyState !== WebSocket.OPEN) {
+    const token = localStorage.getItem("jwtToken");
+    if (!token) {
+      console.error("❌ Токен отсутствует. Пользователь не аутентифицирован.");
       isPlanCreationInProgress = false;
-      if (window.loadingIndicator && typeof window.loadingIndicator.stopLoading === 'function') { 
+      return;
+    }
+    ws = new WebSocket(`wss://gavxku789e.execute-api.us-east-2.amazonaws.com/prod?auth=${encodeURIComponent(token)}`);
+    ws.onopen = () => {
+      console.log("✅ WebSocket подключен");
+      sendPayload(requestText, wordNumber);
+    };
+    ws.onmessage = handleMessage;
+    ws.onerror = (error) => {
+      console.error("❌ Ошибка WebSocket:", error);
+    };
+    ws.onclose = () => {
+      console.log("🔻 WebSocket отключен");
+      ws = null;
+    };
+  } else {
+    //
+    sendPayload(requestText, wordNumber);
+  }
+  
+  textarea.value = "";
+  textarea.style.height = "100px";
+}
+
+
+function sendPayload(requestText, wordNumber) {
+  const payload = {
+    action: "createBookPlan",
+    RequestText: requestText,
+    WordNumber: wordNumber
+  };
+  ws.send(JSON.stringify(payload));
+  console.log("📤 Отправлен запрос на создание книги:", payload);
+}
+
+
+function handleMessage(event) {
+  try {
+    const data = JSON.parse(event.data);
+    console.log("📩 Получено сообщение:", data);
+
+    if (data.type === "book_created") {
+      // 
+      console.log("Новая книга создана. bookId:", data.bookId, "Название:", data.title);
+      if (typeof addNewBookToListAndOpen === "function") {
+        addNewBookToListAndOpen(data.title, data.bookId);
+      }
+    } else if (data.type === "chunk") {
+      handleChunk(data);
+    } else if (data.type === "done") {
+      isPlanCreationInProgress = false;
+      if (window.loadingIndicator && typeof window.loadingIndicator.stopLoading === "function") {
         window.loadingIndicator.stopLoading();
       }
-    });
+      // 
+      if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.close();
+      }
+    } else if (data.type === "error") {
+      console.error("Ошибка:", data.message);
+      document.getElementById("chat-messages-area").innerHTML = '<div style="color: red;">Ошибка. Попробуйте позже.</div>';
+      isPlanCreationInProgress = false;
+    }
+  } catch (error) {
+    console.error("Ошибка обработки WebSocket-сообщения:", error);
+  }
 }
+
+
+function handleChunk(chunk) {
+  if (chunk && typeof chunk.content === "string") {
+    // Добавляем полученный контент в накопленный текст
+    accumulatedText += chunk.content;
+    renderText();
+  }
+}
+
+
+function renderText() {
+  const messagesContainer = document.getElementById("chat-messages-area");
+  messagesContainer.style.whiteSpace = "pre-wrap"; // Сохраняем переносы строк и пробелы
+  messagesContainer.textContent = accumulatedText;
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
